@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'admin/painel', loadChildren: () => import('./components/admin/painel/painel.module').then(m => m.PainelModule), canActivate: [AuthguardService] },
   { path: 'admin/empresa', loadChildren: () => import('./components/admin/empresa/empresa.module').then(m => m.EmpresaModule), canActivate: [AuthguardService] },
+  { path: 'admin/funcionario', loadChildren: () => import('./components/admin/funcionario/funcionario.module').then(m => m.FuncionarioModule), canActivate: [AuthguardService] },
 
 ];
 

@@ -29,8 +29,8 @@ export class MenuComponent implements OnInit {
       })
   }
 
-  goToConteudo() {
-    this.router.navigate(['/admin/conteudo'],
+  goToFuncionario() {
+    this.router.navigate(['/admin/funcionario'],
       {
         state: {
           usuarioLogado: this.usuarioLogado

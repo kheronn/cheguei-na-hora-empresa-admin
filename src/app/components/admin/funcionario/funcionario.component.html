@@ -1,0 +1,156 @@
+<div class="col col-lg-12 col-centered">
+
+  <div class="card col-lg-12 bg-light col-centered">
+    <div class="card-header">
+      <h3> Funcionarios
+        <button type="button" style="margin-right: 0px" (click)="add()" class="text-right btn btn-outline-info btn-lg">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </button>
+      </h3>
+    </div>
+    <div class="card-body col-lg-12 col-centered">
+      <table class="table table-striped table-hover table-bordered col-centered">
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-center">Empresa</th>
+            <th class="text-center">RG</th>
+            <th class="text-center">Nome</th>
+            <th class="text-center">Nascimento</th>
+            <th class="text-center">Telefone</th>
+            <th class="text-center">Hora Extra</th>
+
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let funcionario of funcionarios$ | async">
+            <td class="text-center">{{funcionario.empresa?.nome}}</td>
+            <td class="text-center">{{funcionario.rg}}</td>
+            <td class="text-center">{{funcionario.nome}} </td>
+            <td class="text-center">
+              {{ funcionario.dataNascimento ? (funcionario.dataNascimento?.seconds * 1000  | date : 'dd/MM/yyyy') : ''}}
+            </td>
+            <td class="text-center">{{funcionario.celular}}</td>
+            <td class="text-center">
+              <i *ngIf="!funcionario.horaExtra" class="fas fa-bell-slash fa-2x"></i>
+              <i *ngIf="funcionario.horaExtra" class="fas fa-bell fa-2x "></i>
+            </td>
+            <td class="text-center">
+              <button type="button" (click)="selecionaFuncionario(funcionario)" class="btn btn-success  ">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button type="button" (click)="delete(funcionario)" class="btn btn-danger  ">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+
+      <div class="text-center">
+        <a [routerLink]="['/admin/painel']" class="btn btn-primary ">
+          <i class="fa fa-search" aria-hidden="true"></i>
+          Voltar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-dialog header="Dados da Funcionario" [minWidth]="600" [contentStyle]="{'overflow':'visible'}"
+  [(visible)]="displayDialogFuncionario" [responsive]="true" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="form.value">
+    <form [formGroup]="form">
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="departamento">Empresa*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <ng-select [items]="empresas$ | async" bindLabel="nome" formControlName="empresa">
+          </ng-select>
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="ocorrencia">RG*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <input type="text" pInputText pKeyFilter="int" formControlName="rg" />
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="email">CPF*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <p-inputMask mask="999.999.999-99" formControlName="cpf" unmask="false">
+          </p-inputMask>
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="ocorrencia">Nome*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <input type="text" pInputText formControlName="nome" />
+        </div>
+      </div>
+
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="email">Telefone:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <p-inputMask mask="(99)99999-9999" formControlName="celular" unmask="false" placeholder="(99)99999-9999">
+          </p-inputMask>
+        </div>
+      </div>
+
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="departamento">Função:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <input type="text" pInputText formControlName="funcao" />
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="departamento">Nível:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <ng-select [items]="niveis" formControlName="nivelSistema">
+          </ng-select>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <label for="data">Nascimento:</label>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-calendar appendTo="body" formControlName="dataNascimento" dateFormat="dd/mm/yy" >
+          </p-calendar>
+        </div>
+      </div>
+      <hr>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label>Hora Extra</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <p-toggleButton formControlName="horaExtra" onLabel="SIM" offLabel="NÃO" onIcon="pi pi-check"
+            offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ">
+      <button [disabled]="!form.valid" type="button" class="btn btn-primary" (click)="save()">
+        <i class="fas fa-check-circle"></i> {{edit ? 'Atualizar' : 'Salvar'}}
+      </button>
+    </div>
+  </p-footer>
+</p-dialog>

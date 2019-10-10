@@ -19,7 +19,6 @@ export class EmpresaComponent implements OnInit {
   displayDialogEmpresa: boolean;
   form: FormGroup;
   usuarioLogado: Usuario;
-  cidades: any;
 
 
   constructor(
@@ -43,6 +42,7 @@ export class EmpresaComponent implements OnInit {
       cidade: new FormControl('', Validators.required),
       lat: new FormControl('', Validators.required),
       lng: new FormControl('', Validators.required),
+      qtdLicenca: new FormControl('', Validators.required),
       telefone: new FormControl(''),
       contato: new FormControl(''),
     })
@@ -50,7 +50,7 @@ export class EmpresaComponent implements OnInit {
 
   setValorPadrao() {
        this.form.patchValue({
-        id: this.form.value['cnpj']
+        qtdLicenca: 1
       })
   }
 
