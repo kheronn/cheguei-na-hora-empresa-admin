@@ -1,1 +1,122 @@
-<p>empresa works!</p>
+<div class="col col-lg-12 col-centered">
+
+  <div class="card col-lg-12 bg-light col-centered">
+    <div class="card-header">
+      <h3> Empresas
+        <button type="button" style="margin-right: 0px" (click)="add()" class="text-right btn btn-outline-info btn-lg">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </button>
+      </h3>
+    </div>
+    <div class="card-body col-lg-12 col-centered">
+      <table class="table table-striped table-hover table-bordered col-centered">
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-center">CNPJ</th>
+            <th class="text-center">Nome</th>
+            <th class="text-center">Telefone</th>
+            <th class="text-center">Latitude</th>
+            <th class="text-center">Longitude</th>
+
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empresa of empresas$ | async">
+            <td class="text-center">{{empresa.cnpj}}</td>
+             <td class="text-center">{{empresa.nome}} - {{empresa.contato}}</td>
+             <td class="text-center">{{empresa.telefone}}</td>
+             <td class="text-center">{{empresa.lat}}</td>
+            <td class="text-center">{{empresa.lng}}</td>
+            <td class="text-center">
+              <button type="button" (click)="selecionaEmpresa(empresa)" class="btn btn-success  ">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button type="button" (click)="delete(empresa)" class="btn btn-danger  ">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+
+      <div class="text-center">
+        <a [routerLink]="['/admin/painel']" class="btn btn-primary ">
+          <i class="fa fa-search" aria-hidden="true"></i>
+          Voltar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-dialog header="Dados da Empresa" [minWidth]="600" [contentStyle]="{'overflow':'visible'}"
+  [(visible)]="displayDialogEmpresa" [responsive]="true" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="form.value">
+    <form [formGroup]="form">
+        <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="email">CNPJ*:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <p-inputMask mask="99.999.999/9999-99" formControlName="cnpj" unmask="false">
+              </p-inputMask>
+            </div>
+          </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="ocorrencia">Nome*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <input type="text" pInputText formControlName="nome" />
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="email">Telefone:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <p-inputMask mask="(99)9999-9999" formControlName="telefone" unmask="false" placeholder="(99)99999-9999">
+          </p-inputMask>
+        </div>
+      </div>
+
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="departamento">Cidade*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+            <input type="text" pInputText formControlName="cidade" />
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="departamento">Coordenadas*:</label>
+        </div>
+        <div class="ui-grid-col-4 ">
+            <input type="text" pInputText placeholder="Latitude" formControlName="lat" />
+        </div>
+        <div class="ui-grid-col-4 ">
+            <input type="text" pInputText placeholder="Longitude" formControlName="lng" />
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="departamento">Contato:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+            <input type="text" pInputText formControlName="contato" />
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ">
+      <button [disabled]="!form.valid" type="button" class="btn btn-primary" (click)="save()">
+        <i class="fas fa-check-circle"></i> {{edit ? 'Atualizar' : 'Salvar'}}
+      </button>
+    </div>
+  </p-footer>
+</p-dialog>

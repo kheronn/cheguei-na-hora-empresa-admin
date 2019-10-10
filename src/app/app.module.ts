@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import localePt from '@angular/common/locales/pt';
 import { registerLocaleData, DatePipe } from '@angular/common';
@@ -26,6 +27,7 @@ registerLocaleData(localePt, 'pt');
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
