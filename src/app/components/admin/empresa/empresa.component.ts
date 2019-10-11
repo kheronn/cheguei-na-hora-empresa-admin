@@ -42,6 +42,7 @@ export class EmpresaComponent implements OnInit {
       cidade: new FormControl('', Validators.required),
       lat: new FormControl('', Validators.required),
       lng: new FormControl('', Validators.required),
+      raio: new FormControl('', Validators.required),
       qtdLicenca: new FormControl('', Validators.required),
       telefone: new FormControl(''),
       contato: new FormControl(''),

@@ -10,5 +10,6 @@ export class Empresa extends Model {
   contato: string;
   lat: number;
   lng: number;
+  raio: number;
   qtdLicenca: number;
 }
