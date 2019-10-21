@@ -14,7 +14,7 @@ export class MenuComponent implements OnInit {
   @Input()
   user: Observable<firebase.User>;
   @Input()
-  usuarioLogado: Usuario;
+  funcionarioLogado: Usuario;
 
   constructor(private authServ: AuthenticationService, private router: Router) { }
 
@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['/admin/empresa'],
       {
         state: {
-          usuarioLogado: this.usuarioLogado
+          usuarioLogado: this.funcionarioLogado
         }
       })
   }
@@ -33,7 +33,7 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['/admin/funcionario'],
       {
         state: {
-          usuarioLogado: this.usuarioLogado
+          usuarioLogado: this.funcionarioLogado
         }
       })
   }

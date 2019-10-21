@@ -26,7 +26,6 @@ export class AppComponent {
       if (dados) {
         this.usuarioService.getFuncionarioByEmail(dados.email)
           .subscribe(u => {
-            console.log(`Usuario ${u.nome}`)
            if (u) this.funcionarioLogado = u
           })
       }

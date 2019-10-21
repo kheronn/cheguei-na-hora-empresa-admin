@@ -64,7 +64,7 @@
     <form [formGroup]="form">
       <p-tabView>
         <p-tabPanel header="Dados básicos">
-          <div class="ui-grid-row mb-3">
+          <div  *ngIf="!funcionarioLogado.empresa" class="ui-grid-row mb-3">
             <div class="ui-grid-col-4">
               <label for="departamento">Empresa*:</label>
             </div>
@@ -139,7 +139,7 @@
             </div>
           </div>
         </p-tabPanel>
-        <p-tabPanel header="Acesso">
+        <p-tabPanel  *ngIf="!funcionarioLogado.empresa"  header="Acesso">
           <div class="ui-grid-row mb-3">
             <div class="ui-grid-col-4">
               <label for="departamento">Nível:</label>
@@ -150,7 +150,7 @@
             </div>
           </div>
 
-          <div *ngIf="form.value['nivelSistema']== 'Gerente' " class="ui-grid-row mb-3">
+          <div *ngIf="form.value['nivelSistema'] == 'Gerente'" class="ui-grid-row mb-3">
             <div class="ui-grid-col-4">
               <label>Email:</label>
             </div>

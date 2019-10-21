@@ -14,21 +14,24 @@ export class FuncionarioService extends ServiceFirebase<Funcionario> {
     super(Funcionario, firestore, 'funcionarios');
   }
 
+  getFuncionarioByEmpresa(cnpj: string) {
+    return this.firestore.collection<Funcionario>('funcionarios', ref =>
+      ref.where("empresa.cnpj", "==", cnpj))
+      .valueChanges();
+  }
 
-  getFuncionarioByCPF(cpf) {
+  getFuncionarioByCPF(cpf: string) {
     return this.firestore.collection<Funcionario>('funcionarios', ref =>
       ref.where("cpf", "==", cpf))
       .valueChanges()
-      .pipe(
-        map(lista => lista[0])
-      )
+      .pipe(map(lista => lista[0]));
   }
+
   getFuncionarioByRG(rg) {
     return this.firestore.collection<Funcionario>('funcionarios', ref =>
       ref.where("rg", "==", rg))
       .valueChanges()
-      .pipe(
-        map(lista => lista[0])
-      )
+      .pipe(map(lista => lista[0]));
   }
+
 }

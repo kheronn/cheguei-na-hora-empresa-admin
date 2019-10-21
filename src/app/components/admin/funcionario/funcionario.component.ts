@@ -3,7 +3,6 @@ import { Funcionario } from './../../../models/funcionario.model';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Usuario } from 'src/app/models/usuario.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { EmpresaService } from 'src/app/services/empresa.service';
@@ -22,7 +21,7 @@ export class FuncionarioComponent implements OnInit {
   edit: boolean;
   displayDialogFuncionario: boolean;
   form: FormGroup;
-  usuarioLogado: Usuario;
+  funcionarioLogado: Funcionario;
   cidades: any;
   pt: any;
   niveis: String[];
@@ -35,16 +34,17 @@ export class FuncionarioComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe
   ) {
-    this.usuarioLogado = this.router.getCurrentNavigation().extras.state['usuarioLogado']
+    this.funcionarioLogado = this.router.getCurrentNavigation().extras.state['usuarioLogado']
   }
 
   ngOnInit() {
     this.empresas$ = this.empresaService.list();
-    this.funcionarios$ = this.funcionarioService.list();
+    this.funcionarios$ = (this.funcionarioLogado.empresa === undefined) ? this.funcionarioService.list() : this.funcionarioService.getFuncionarioByEmpresa(this.funcionarioLogado.empresa.cnpj);
     this.configForm();
     this.configuraCalendario();
     this.configuraNiveis();
   }
+
   configuraNiveis() {
     this.niveis = ["Gerente", "Operador"];
   }
@@ -70,13 +70,16 @@ export class FuncionarioComponent implements OnInit {
 
   setValorPadrao() {
     this.form.patchValue({
-      horaExtra: false
+      horaExtra: false,
+      nivelSistema: 'Operador',
+      empresa: this.funcionarioLogado.empresa || null
     })
   }
 
   transformaSenha() {
     this.form.patchValue({
       senha: this.datePipe.transform(this.form.value["dataNascimento"], "ddMMyyyy")
+
     })
   }
 
@@ -104,6 +107,7 @@ export class FuncionarioComponent implements OnInit {
         return;
       }
     }
+
     this.funcionarioService.createOrUpdate(this.form.value)
       .then(() => {
         this.displayDialogFuncionario = false;
