@@ -1,20 +1,20 @@
+import { Funcionario } from './../models/funcionario.model';
 import { Injectable } from '@angular/core';
 import { ServiceFirebase } from './servicefirebase.service';
-import { Usuario } from '../models/usuario.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService extends ServiceFirebase<Usuario> {
+export class UsuarioService extends ServiceFirebase<Funcionario> {
 
   constructor(firestore: AngularFirestore) {
-    super(Usuario, firestore, 'usuarios');
+    super(Funcionario, firestore, 'funcionarios');
   }
 
-  getUsuarioByEmail(email) {
-    return this.firestore.collection<Usuario>('usuarios', ref =>
+  getFuncionarioByEmail(email)  {
+    return this.firestore.collection<Funcionario>('funcionarios', ref =>
       ref.where("email", "==", email))
       .valueChanges()
       .pipe(

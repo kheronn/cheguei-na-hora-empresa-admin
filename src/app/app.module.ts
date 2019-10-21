@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/public/login/login.component';
 import { MenuComponent } from './components/admin/menu/menu.component';
+import { MenuEmpresaComponent } from './components/admin/menu-empresa/menu-empresa.component';
 
 registerLocaleData(localePt, 'pt');
 
@@ -22,7 +23,8 @@ registerLocaleData(localePt, 'pt');
   declarations: [
     AppComponent,
     LoginComponent,
-    MenuComponent
+    MenuComponent,
+    MenuEmpresaComponent
 
   ],
   imports: [

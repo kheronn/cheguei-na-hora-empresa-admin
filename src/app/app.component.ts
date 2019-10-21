@@ -1,3 +1,4 @@
+import { Funcionario } from './models/funcionario.model';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from './services/authentication.service';
@@ -13,7 +14,7 @@ import { Usuario } from './models/usuario.model';
 
 export class AppComponent {
   user: Observable<firebase.User>;
-  usuarioLogado: Usuario;
+  funcionarioLogado: Funcionario;
   constructor(
     private authServ: AuthenticationService,
     private usuarioService: UsuarioService,
@@ -23,9 +24,10 @@ export class AppComponent {
     this.user = this.authServ.authUser();
     this.user.subscribe(dados => {
       if (dados) {
-        this.usuarioService.getUsuarioByEmail(dados.email)
+        this.usuarioService.getFuncionarioByEmail(dados.email)
           .subscribe(u => {
-            if (u) this.usuarioLogado = u
+            console.log(`Usuario ${u.nome}`)
+           if (u) this.funcionarioLogado = u
           })
       }
     })
