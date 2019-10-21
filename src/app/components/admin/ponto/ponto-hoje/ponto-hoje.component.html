@@ -1,0 +1,134 @@
+<div class="col col-lg-10 col-centered py-2">
+  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="timer"></ngx-spinner>
+  <div class="card bg-light ">
+    <div class="card-header">
+      <h3> Ponto de Hoje ({{hoje}})</h3>
+      <h4 class="alert alert-dismissible alert-primary text-center ">{{(pontosHoje | async)?.length}} PONTOS REGISTRADOS
+      </h4>
+    </div>
+  </div>
+
+  <div class="col col-lg-12 card-body ">
+    <table *ngIf="pontosHoje" class="table table-striped table-hover table-bordered ">
+      <thead class="table-primary">
+        <tr>
+          <th class="text-center">Nome</th>
+          <th class="text-center">Entrada</th>
+          <th class="text-center">Saída</th>
+          <th class="text-center">Entrada</th>
+          <th class="text-center">Saída</th>
+          <th class="text-center">Justificativa</th>
+          <th class="text-center">Ações</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ponto of pontosHoje | async">
+
+          <td>{{ponto.nome.toUpperCase()}}</td>
+          <td class="text-center" *ngIf="ponto?.primeiraBatida">
+            <i class="fa fa-arrow-circle-right"></i>
+            {{ponto?.primeiraBatida?.seconds * 1000 | date: 'HH:mm:ss'}}
+          </td>
+          <td class="text-center" *ngIf="ponto?.segundaBatida">
+            <i class="fa fa-arrow-circle-left" style="color:red"></i>
+            {{ponto?.segundaBatida?.seconds * 1000 | date: 'HH:mm:ss'}}
+          </td>
+          <td class="text-center" *ngIf="ponto?.terceiraBatida">
+            <i class="fa fa-arrow-circle-right"></i>
+            {{ponto?.terceiraBatida?.seconds * 1000 | date: 'HH:mm:ss'}}
+          </td>
+          <td class="text-center" *ngIf="ponto?.quartaBatida">
+            <i class="fa fa-arrow-circle-left" style="color:red"></i>
+            {{ponto?.quartaBatida?.seconds * 1000 | date: 'HH:mm:ss'}}
+          </td>
+          <td class="text-center"> {{ponto.justificativa || ''}} </td>
+
+          <td class="text-center">
+            <button type="button" (click)="detalhesPonto(ponto)" class="btn btn-info  btn-lg ">
+              <i class="fas fa-user-clock"></i>
+              Detalhes </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-center">
+      <a [routerLink]="['/']" class="btn btn-primary ">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        Voltar</a>
+
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Detalhes do Ponto Servidor" [responsive]="true" [width]="800" [height]="500"
+  [(visible)]="displayDialogPonto" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="ponto">
+    <h4 class="alert alert-dismissible alert-warning text-center ">{{ponto?.nome}}</h4>
+    <div class="ui-grid-row mb-3">
+      <div class="ui-grid-col-4">
+        <label for="ocorrencia">Data:</label>
+      </div>
+      <div class="ui-grid-col-9 btn btn-primary btn-lg btn-block">
+        <span class="btn btn-primary btn-lg btn-block">
+          <h2>{{ponto?.dataPonto.seconds * 1000 | date: 'dd/MM/yy'}}</h2>
+        </span>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">
+        <label for="data">Entrada:</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-calendar [(ngModel)]="ponto.primeiraBatida" [timeOnly]="true" [showIcon]="true">
+        </p-calendar>
+      </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">
+        <label for="data">Saída:</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-calendar [(ngModel)]="ponto.segundaBatida" [timeOnly]="true" [showIcon]="true">
+        </p-calendar>
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">
+        <label for="data">Entrada:</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-calendar [(ngModel)]="ponto.terceiraBatida" [timeOnly]="true" [showIcon]="true">
+        </p-calendar>
+      </div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4">
+        <label for="data">Saída:</label>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-calendar [(ngModel)]="ponto.quartaBatida" [timeOnly]="true" [showIcon]="true"></p-calendar>
+      </div>
+    </div>
+
+    <div class="ui-grid-row mb-3">
+      <div class="ui-grid-col-4">
+        <label for="ocorrencia">Justificativa:*</label>
+      </div>
+      <div class="ui-grid-col-6">
+        <input type="text" placeholder="Justificativa do ponto" pInputText [(ngModel)]="ponto.justificativa" />
+      </div>
+    </div>
+
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
+      <button type="button" class="btn btn-success" (click)="updatePontoServidor()">
+        <i class="fas fa-edit"></i> ATUALIZAR
+      </button> </div>
+  </p-footer>
+</p-dialog>

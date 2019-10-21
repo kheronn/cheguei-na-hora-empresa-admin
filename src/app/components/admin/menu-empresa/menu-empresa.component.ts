@@ -30,6 +30,30 @@ export class MenuEmpresaComponent implements OnInit {
       })
   }
 
+  goToPontoHoje() {
+    this.router.navigate(['/admin/ponto/hoje'],
+      {
+        state: {
+          usuarioLogado: this.funcionarioLogado
+        }
+      })
+  }
+  goToPontoFuncionario() {
+    this.router.navigate(['/admin/ponto/funcionario'],
+      {
+        state: {
+          usuarioLogado: this.funcionarioLogado
+        }
+      })
+  }
+  goToPontoRelatorio() {
+    this.router.navigate(['/admin/ponto/relatorio'],
+      {
+        state: {
+          usuarioLogado: this.funcionarioLogado
+        }
+      })
+  }
   goToFuncionario() {
     this.router.navigate(['/admin/funcionario'],
       {
@@ -38,6 +62,8 @@ export class MenuEmpresaComponent implements OnInit {
         }
       })
   }
+
+
   sair() {
     this.authServ.logout().then(() => this.router.navigate(['/']));
   }

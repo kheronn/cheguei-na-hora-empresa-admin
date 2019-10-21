@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'admin/painel', loadChildren: () => import('./components/admin/painel/painel.module').then(m => m.PainelModule), canActivate: [AuthguardService] },
   { path: 'admin/empresa', loadChildren: () => import('./components/admin/empresa/empresa.module').then(m => m.EmpresaModule), canActivate: [AuthguardService] },
   { path: 'admin/funcionario', loadChildren: () => import('./components/admin/funcionario/funcionario.module').then(m => m.FuncionarioModule), canActivate: [AuthguardService] },
-
+  { path: 'admin/ponto/hoje', loadChildren: () => import('./components/admin/ponto/ponto-hoje/ponto-hoje.module').then(m => m.PontoHojeModule), canActivate: [AuthguardService] },
 ];
 
 @NgModule({

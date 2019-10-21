@@ -14,7 +14,6 @@ import { DatePipe } from '@angular/common';
     ComumModule,
     NgxSpinnerModule,
     NgSelectModule,
-
     FuncionarioRoutingModule
   ]
 
