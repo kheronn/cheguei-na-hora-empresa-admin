@@ -62,90 +62,109 @@
   [(visible)]="displayDialogFuncionario" [responsive]="true" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="form.value">
     <form [formGroup]="form">
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="departamento">Empresa*:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <ng-select [items]="empresas$ | async" bindLabel="nome" formControlName="empresa">
-          </ng-select>
-        </div>
-      </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="ocorrencia">RG*:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <input type="text" pInputText pKeyFilter="int" formControlName="rg" />
-        </div>
-      </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="email">CPF*:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <p-inputMask mask="999.999.999-99" formControlName="cpf" unmask="false">
-          </p-inputMask>
-        </div>
-      </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="ocorrencia">Nome*:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <input type="text" pInputText formControlName="nome" />
-        </div>
-      </div>
+      <p-tabView>
+        <p-tabPanel header="Dados básicos">
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="departamento">Empresa*:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <ng-select [items]="empresas$ | async" bindLabel="nome" formControlName="empresa">
+              </ng-select>
+            </div>
+          </div>
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="ocorrencia">RG*:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <input type="text" pInputText pKeyFilter="int" formControlName="rg" />
+            </div>
+          </div>
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="email">CPF*:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <p-inputMask mask="999.999.999-99" formControlName="cpf" unmask="false">
+              </p-inputMask>
+            </div>
+          </div>
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="ocorrencia">Nome*:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <input type="text" pInputText formControlName="nome" />
+            </div>
+          </div>
 
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="email">Telefone:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <p-inputMask mask="(99)99999-9999" formControlName="celular" unmask="false" placeholder="(99)99999-9999">
-          </p-inputMask>
-        </div>
-      </div>
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="email">Telefone:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <p-inputMask mask="(99)99999-9999" formControlName="celular" unmask="false" placeholder="(99)99999-9999">
+              </p-inputMask>
+            </div>
+          </div>
 
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="departamento">Função:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <input type="text" pInputText formControlName="funcao" />
-        </div>
-      </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="departamento">Nível:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <ng-select [items]="niveis" formControlName="nivelSistema">
-          </ng-select>
-        </div>
-      </div>
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-4">
-          <label for="data">Nascimento:</label>
-        </div>
-        <div class="ui-grid-col-4">
-          <p-calendar appendTo="body" formControlName="dataNascimento" dateFormat="dd/mm/yy" >
-          </p-calendar>
-        </div>
-      </div>
-      <hr>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label>Hora Extra</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <p-toggleButton formControlName="horaExtra" onLabel="SIM" offLabel="NÃO" onIcon="pi pi-check"
-            offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
-        </div>
-      </div>
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="departamento">Função:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <input type="text" pInputText formControlName="funcao" />
+            </div>
+          </div>
 
+
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-4">
+              <label for="data">Nascimento:</label>
+            </div>
+            <div class="ui-grid-col-4">
+              <p-calendar appendTo="body" formControlName="dataNascimento" dateFormat="dd/mm/yy">
+              </p-calendar>
+            </div>
+          </div>
+          <hr>
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label>Hora Extra</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <p-toggleButton formControlName="horaExtra" onLabel="SIM" offLabel="NÃO" onIcon="pi pi-check"
+                offIcon="pi pi-times" [style]="{'width':'150px'}"></p-toggleButton>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Acesso">
+          <div class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label for="departamento">Nível:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <ng-select [items]="niveis" formControlName="nivelSistema">
+              </ng-select>
+            </div>
+          </div>
+
+          <div *ngIf="form.value['nivelSistema']== 'Gerente' " class="ui-grid-row mb-3">
+            <div class="ui-grid-col-4">
+              <label>Email:</label>
+            </div>
+            <div class="ui-grid-col-8 ">
+              <input type="email" pInputText formControlName="email" />
+            </div>
+          </div>
+
+
+        </p-tabPanel>
+      </p-tabView>
     </form>
   </div>
+
   <p-footer>
     <div class="ui-dialog-buttonpane ">
       <button [disabled]="!form.valid" type="button" class="btn btn-primary" (click)="save()">

@@ -20,25 +20,28 @@ exports.createUser = functions.firestore
   .onCreate((snap, context) => {
 
     const funcionario = snap.data();
-    const email = funcionario.email;
-    const rg = funcionario.rg;
-    const nome = funcionario.nome;
+    if (funcionario.nivelSistema == 'Gerente') { // Cria usuário para Controle Administrativo
+      const rg = funcionario.rg;
+      const email = funcionario.email;
+      const nome = funcionario.nome;
 
-
-    return admin.auth().createUser({
-      uid: `${email}`,
-      email: `${email}`,
-      emailVerified: false,
-      password: `123456`,
-      displayName: `${nome}`,
-      disabled: false
-    }).then((userRecord) => {
-      console.log('Usuário registrado com sucesso')
-      return userRecord;
-    })
-      .catch((error) => {
-        console.log("Não foi possível criar o usuário:", error);
-      });
+      return admin.auth().createUser({
+        uid: `${email}`,
+        email: `${email}`,
+        emailVerified: false,
+        password: funcionario.rg,
+        displayName: `${nome}`,
+        disabled: false
+      }).then((userRecord) => {
+        console.log('Usuário administrativo registrado com sucesso')
+        return userRecord;
+      })
+        .catch((error) => {
+          console.log("Não foi possível criar o usuário:", error);
+        });
+    } else {
+      return null;
+    }
   })
 
 

@@ -46,7 +46,7 @@ export class FuncionarioComponent implements OnInit {
     this.configuraNiveis();
   }
   configuraNiveis() {
-    this.niveis = ["Gerente","Operador"];
+    this.niveis = ["Gerente", "Operador"];
   }
 
 
@@ -90,11 +90,20 @@ export class FuncionarioComponent implements OnInit {
   selecionaFuncionario(depto: Funcionario) {
     this.edit = true;
     this.displayDialogFuncionario = true;
+    console.log(depto.dataNascimento.toDate());
+    const dt = depto.dataNascimento.toDate();
+    depto.dataNascimento = dt;
     this.form.setValue(depto);
   }
 
   save() {
     this.transformaSenha();
+    if (this.form.value["nivelSistema"] == 'Gerente') {
+      if (this.form.value["email"] == '' || this.form.value["email"] == null) {
+        Swal.fire(`Campo EMAIL obrigatório para o nível de acesso!`, ``, 'warning');
+        return;
+      }
+    }
     this.funcionarioService.createOrUpdate(this.form.value)
       .then(() => {
         this.displayDialogFuncionario = false;
