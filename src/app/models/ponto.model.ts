@@ -6,6 +6,7 @@ export class Ponto extends Model {
   idPonto: string;
   nome: string;
   idFunc: string;
+  rg: string;
   dataPonto: any;
   dataPontoFormatado: string;
   tipoOcorrencia?: string;

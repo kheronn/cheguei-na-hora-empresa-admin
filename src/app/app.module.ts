@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -37,7 +37,7 @@ registerLocaleData(localePt, 'pt');
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule
   ],
-  providers: [],
+  providers: [DatePipe, { provide: LOCALE_ID, useValue: "pt" }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

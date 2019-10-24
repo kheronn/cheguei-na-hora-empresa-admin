@@ -1,0 +1,100 @@
+<div class="container">
+  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="timer"></ngx-spinner>
+
+  <!-- Filtro do Mês para ocorrências Escola -->
+  <div class="row" style="margin-top: 10px;">
+
+    <div class="col-lg-9  ">
+      <div class="card-header">
+        <h3> Funcionário </h3>
+      </div>
+      <div class="form-group ">
+        <div class="col col-lg-12 col-centered">
+          <div class="form-group">
+            <input type="text" (keydown.enter)="consultaNome($event)" class="form-control" name="filterPost"
+              placeholder="Nome do funcionário...pressione ENTER">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 ">
+      <div class="card-header">
+        <h3> Período </h3>
+      </div>
+      <div class="form-group ">
+        <div class="col col-lg-12 col-centered">
+          <input id="month" class="form-control form-control-lg" (change)="mudaMes($event)" type="month">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col col-lg-12 col-centered py-2">
+    <div class="card bg-light ">
+      <div class="card-header">
+        <h3>
+          <span *ngIf="funcionarioSelecionado" class="badge badge-dark"> {{funcionarioSelecionado?.nome}}</span>
+          <span *ngIf="inicio" class="badge badge-info float-right"> {{inicio | date: 'MMMM' | uppercase}}</span>
+        </h3>
+      </div>
+      <div *ngIf="pontoMes" class="card-body ">
+
+        <textarea placeholder="Observação" class="form-control col-xs-12" pInputTextarea
+          [(ngModel)]="pontoMes.observacao"></textarea>
+        <div class="text-center my-2">
+          <button type="button"
+            (click)="imprimirPontoFuncionario()"
+            class="btn btn-warning btn-block  btn-lg my-2 ">
+            <i class="fas fa-print"></i> Imprimir
+          </button>
+
+          <a [routerLink]="['/']" class="btn btn-primary ">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            Voltar</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<p-dialog header="Resultado" [minWidth]="600" [positionTop]="0" [contentStyle]="{'overflow':'visible'}"
+  [(visible)]="dlgResultado" [responsive]="true" [modal]="true">
+
+  <div *ngIf="(funcionarios$ | async)?.length == 0; else resultado" class="alert alert-dismissible alert-danger">
+    <h4 class="alert-heading">Nenhum resultado para consulta!</h4>
+  </div>
+
+  <ng-template #resultado>
+
+    <table class="table table-striped table-hover table-bordered col-centered">
+      <thead class="thead-primary">
+        <tr>
+          <th class="text-center">Nome</th>
+          <th class="text-center">RG</th>
+          <th class="text-center">Seleciona</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let func of funcionarios$ | async">
+          <td class="text-center">{{func.nome}}</td>
+          <td class="text-center">{{func.rg}}</td>
+          <td class="text-center">
+            <div>
+              <button type="button" style="width: 100%" (click)="selecionaFuncionario(func)" class="btn btn-info  ">
+                <i class="fas fa-check"></i>
+              </button>
+            </div>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+</p-dialog>

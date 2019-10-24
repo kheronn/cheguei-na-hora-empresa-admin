@@ -14,6 +14,21 @@ export class FuncionarioService extends ServiceFirebase<Funcionario> {
     super(Funcionario, firestore, 'funcionarios');
   }
 
+  consultaPessoaPeloNome(nome: string) {
+    var strlength = nome.length;
+    var strFrontCode = nome.slice(0, strlength - 1);
+    var strEndCode = nome.slice(strlength - 1, nome.length);
+
+    var started = nome;
+    var endcode =
+      strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
+
+    return this.firestore.collection<Funcionario>("funcionarios", ref =>
+        ref.where("nome", ">=", started).where("nome", "<", endcode)
+      )
+      .valueChanges();
+  }
+
   getFuncionarioByEmpresa(cnpj: string) {
     return this.firestore.collection<Funcionario>('funcionarios', ref =>
       ref.where("empresa.cnpj", "==", cnpj))

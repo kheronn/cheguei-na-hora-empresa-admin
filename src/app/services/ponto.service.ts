@@ -13,11 +13,21 @@ export class PontoService extends ServiceFirebase<Ponto> {
     super(Ponto, firestore, 'funcionarios');
   }
 
+  consultaPontoByPeriodoFuncionario(inicio: Date, fim: Date, idFunc: string) {
+
+    return this.firestore.collection<Ponto>('pontos', ref =>
+      ref.where('dataPonto', '>=', inicio)
+        .where('dataPonto', '<', fim)
+        .where('idFunc', '==', idFunc)
+
+        .orderBy('dataPonto', 'desc')
+    ).valueChanges()
+  }
+
+
   consultaPontoHojeTodosFuncionariosByEmpresa(cnpj: string) {
     const now = moment();
     const datestamp = now.format("DD-MM-YYYY");
-    console.log(datestamp, cnpj)
-
     return this.firestore.collection<Ponto>('pontos', ref =>
       ref.where('dataPontoFormatado', '==', datestamp)
         .where('empresa.cnpj', '==', cnpj)
