@@ -45,10 +45,10 @@ export class PontoHojeComponent implements OnInit {
   detalhesPonto(p: Ponto) {
     this.ponto = p;
     this.displayDialogPonto = true;
-    this.ponto.primeiraBatida = (p.primeiraBatida) ? p.primeiraBatida.toDate() : '';
-    this.ponto.segundaBatida = (p.segundaBatida) ? p.segundaBatida.toDate() : '';
-    this.ponto.terceiraBatida = (p.terceiraBatida) ? p.terceiraBatida.toDate() : '';
-    this.ponto.quartaBatida = (p.quartaBatida) ? p.quartaBatida.toDate() : '';
+    this.ponto.primeiraBatida = (p.primeiraBatida) ? p.primeiraBatida.toDate() : null;
+    this.ponto.segundaBatida = (p.segundaBatida) ? p.segundaBatida.toDate() : null;
+    this.ponto.terceiraBatida = (p.terceiraBatida) ? p.terceiraBatida.toDate() : null;
+    this.ponto.quartaBatida = (p.quartaBatida) ? p.quartaBatida.toDate() : null;
 
   }
 
