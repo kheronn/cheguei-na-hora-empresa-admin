@@ -36,7 +36,10 @@ export class PontoRelatorioComponent implements OnInit {
   mesAno: string;
   pontoMes: PontoMes;
   pontosRelatorio: any;
-  totalHorasTrabalhadas: any;
+  totalMesHorasTrabalhadas: any = 0;
+  totalMesMinutosTrabalhados: any = 0;
+  totalMesMinutosNegativosTrabalhados: number = 0;
+  totalMesMinutosPositivosTrabalhados: number = 0;
 
 
   constructor(private router: Router,
@@ -98,7 +101,6 @@ export class PontoRelatorioComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(lista => {
         this.pontosLista = lista.reverse();
-        console.log(lista);
         this.spinner.hide();
       })
   }
@@ -118,6 +120,10 @@ export class PontoRelatorioComponent implements OnInit {
 
   imprimirPontoFuncionario() {
     this.spinner.show()
+    this.totalMesMinutosPositivosTrabalhados = 0;
+    this.totalMesMinutosNegativosTrabalhados = 0;
+    this.totalMesMinutosTrabalhados = 0;
+    this.totalMesHorasTrabalhadas = 0;
     let month = moment(this.inicio).format('MMMM');
     let year = moment().format('YYYY');
     let doc = new jsPDF('p', 'pt');
@@ -128,11 +134,15 @@ export class PontoRelatorioComponent implements OnInit {
       { title: "Saída", dataKey: "segundo" },
       { title: "Entrada", dataKey: "terceiro" },
       { title: "Saída", dataKey: "quarto" },
-      { title: "Total", dataKey: "total" },
-      { title: "Saldo", dataKey: "dif" },
       { title: "Obs", dataKey: "justificativa" },
 
+
+
     ];
+    if (this.funcionarioSelecionado.horaExtra) {
+      columns.push({ title: "Total", dataKey: "total" })
+      columns.push({ title: "Saldo", dataKey: "dif" })
+    }
     let list: any = [];
     this.pontosLista.map(p => {
 
@@ -149,8 +159,7 @@ export class PontoRelatorioComponent implements OnInit {
         if (p.primeiraBatida && p.segundaBatida) {
           relatorio.total = this.calculaDuracao(p.primeiraBatida, p.segundaBatida, p.terceiraBatida, p.quartaBatida)
           var duracao = moment.duration(relatorio.total);
-          console.log(Math.floor(duracao.asHours()) + " : " + duracao.asMinutes() % 60);
-          relatorio.dif = this.calculaDif(Math.floor(duracao.asHours()), duracao.asMinutes() % 60);
+          relatorio.dif = this.calculaDif(duracao.get('hour'), duracao.get('minute'));
         }
       }
       if (p.ocorrencia) {
@@ -159,6 +168,8 @@ export class PontoRelatorioComponent implements OnInit {
       }
       list.push(relatorio)
     })
+    // Exibi o total
+    //console.log("Total de Horas Trabalhadas: " + this.totalMesHorasTrabalhadas.get('hours') + ":" + (this.totalMesHorasTrabalhadas.get('minute') % 60));
     doc.setFontSize(8);
     doc.autoTable(columns, list,
       {
@@ -168,6 +179,11 @@ export class PontoRelatorioComponent implements OnInit {
           overflow: 'linebreak',
           fontSize: 8.5,
           cel: 'wrap'
+        },
+        columnStyles: {
+          total: { halign: 'left' },
+          dif: { halign: 'left' },
+
         },
 
         didDrawPage: () => {
@@ -193,6 +209,16 @@ export class PontoRelatorioComponent implements OnInit {
           doc.setFontType('normal')
           if (typeof this.pontoMes.observacao != 'undefined') {
             doc.text(40, 620, 'Observações: ' + this.pontoMes.observacao);
+          }
+          if (this.funcionarioSelecionado.horaExtra) {
+
+            if (typeof this.totalMesHorasTrabalhadas != 'undefined') {
+              console.log(`Minutos + ${this.totalMesMinutosPositivosTrabalhados} `);
+              console.log(`Minutos - ${this.totalMesMinutosNegativosTrabalhados} `);
+              this.totalMesMinutosTrabalhados = this.totalMesMinutosNegativosTrabalhados - this.totalMesMinutosPositivosTrabalhados;
+              console.log(this.totalMesMinutosTrabalhados);
+              doc.text(40, 680, 'Total de Saldo: ' + (this.totalMesHorasTrabalhadas + Math.round(this.totalMesMinutosTrabalhados / 60)) + ":" + (this.totalMesMinutosTrabalhados % 60));
+            }
           }
           // Assinatura
           doc.setLineWidth(0.5)
@@ -229,17 +255,30 @@ export class PontoRelatorioComponent implements OnInit {
   }
 
   calculaDif(horas: number, minutos: number) {
-    const horasPadrao = moment(new Date(0, 0, 0, 8, 0, 0));
-    console.log(`Horas: ${horas } | Minutos trabalhados ${minutos}`)
-    const horasTrabalhadas = new Date(0, 0, 0, horas, minutos, 0, 0);
+    const horasPadrao = moment(new Date(0, 0, 0, 8));
+    const horasTrabalhadas = new Date(0, 0, 0, horas, minutos);
     let dif1 = moment(horasTrabalhadas).diff(horasPadrao)
     var d = moment.duration(dif1);
     let s;
-    if(d.asHours()>= 0){
-      s = Math.floor(d.asHours()) + moment.utc(dif1).format(":mm");
-    }else{
-      s = Math.ceil(d.asHours()) + moment.utc(dif1).format(":mm");
+    if (d.asHours() >= 0) {
+      s = Math.floor(d.asHours()) + ":" + (d.asMinutes() % 60);
+      console.log("Positivo")
+      this.totalMesHorasTrabalhadas = this.totalMesHorasTrabalhadas + Math.floor(d.asHours());
+      this.totalMesMinutosPositivosTrabalhados = this.totalMesMinutosPositivosTrabalhados + Math.floor(d.asMinutes() % 60);
+      console.log(this.totalMesHorasTrabalhadas + ":" + this.totalMesMinutosPositivosTrabalhados);
+
+    } else {
+      s = Math.ceil(d.asHours()) + ":" + Math.abs(d.asMinutes() % 60);
+      console.log("Negativo")
+      console.log(Math.ceil(d.asHours()))
+      this.totalMesHorasTrabalhadas = this.totalMesHorasTrabalhadas - Math.abs(Math.ceil(d.asHours()));
+      this.totalMesMinutosNegativosTrabalhados = this.totalMesMinutosNegativosTrabalhados + Math.abs(Math.ceil(d.asMinutes() % 60));
+      console.log(Math.ceil(d.asMinutes() % 60))
+      console.log(Math.abs(d.asMinutes() % 60))
+
+      console.log(this.totalMesHorasTrabalhadas + ":" + (this.totalMesMinutosNegativosTrabalhados));
     }
+
     return s;
   }
 
