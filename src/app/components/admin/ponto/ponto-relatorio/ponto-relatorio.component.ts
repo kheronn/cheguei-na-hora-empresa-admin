@@ -217,7 +217,7 @@ export class PontoRelatorioComponent implements OnInit {
               console.log(`Minutos - ${this.totalMesMinutosNegativosTrabalhados} `);
               this.totalMesMinutosTrabalhados = this.totalMesMinutosNegativosTrabalhados - this.totalMesMinutosPositivosTrabalhados;
               console.log(this.totalMesMinutosTrabalhados);
-              doc.text(40, 680, 'Total de Saldo: ' + (this.totalMesHorasTrabalhadas + Math.round(this.totalMesMinutosTrabalhados / 60)) + ":" + (this.totalMesMinutosTrabalhados % 60));
+              doc.text(40, 680, 'Total do saldo ' + (this.totalMesHorasTrabalhadas + Math.round(this.totalMesMinutosTrabalhados / 60)) + " horas e " + (this.totalMesMinutosTrabalhados % 60) + " minutos.");
             }
           }
           // Assinatura
